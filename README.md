@@ -10,13 +10,6 @@ Table of Contents
    * [Testing Setup](#testing-setup)
    * [Dev tools](#dev-tools)
 * [Technical design](#technical-design)
-* [How to work on](#how-to-work-on)
-   * [React Navigation](#react-navigation)
-   * [Glamorous Native](#glamorous-native)
-   * [Formik](#formik)
-   * [Multiple environments](#multiple-environments)
-   * [Crash report](#crash-report)
-   * [Feature flags](#feature-flags)
 * [Style guide](#style-guide)
    * [Core ideology](#core-ideology)
    * [Code structure](#code-structure)
@@ -38,11 +31,11 @@ Table of Contents
    * [Why TypeScript?](#why-typescript)
    * [Why Functional Javascript?](#why-functional-javascript)
    * [Why Ramda over lodash, or underscore?](#why-ramda-over-lodash-or-underscore)
-   * [Why prefer Stateless Functional Component over Stateful Component, Higher Order Component and Recompose ?](#why-prefer-stateless-functional-component-over-stateful-component-higher-order-component-and-recompose-)
+   * [Why prefer Stateless Functional Component over Stateful Component, Higher Order Component and Recompose?](#why-prefer-stateless-functional-component-over-stateful-component-higher-order-component-and-recompose)
    * [Why prefer formik over redux-form?](#why-prefer-formik-over-redux-form)
 * [Recipes](#recipes)
-   * [Render multiple snapshots on a React component](#render-multiple-snapshots-on-a-react-component)
-   * [Render a single snapshot on a React element](#render-a-single-snapshot-on-a-react-element)
+   * [Render multiple snapshots for a React component](#render-multiple-snapshots-for-a-react-component)
+   * [Render a single snapshot for a React element](#render-a-single-snapshot-for-a-react-element)
    * [Pattern matching on values](#pattern-matching-on-values)
    * [Pattern matching on functions](#pattern-matching-on-functions)
    * [Pattern matching on components](#pattern-matching-on-components)
@@ -79,26 +72,6 @@ Table of Contents
 * [insomnia](https://insomnia.rest/) Powerful HTTP and GraphQL tool belt
 
 ## Technical design
-// TODO: TBD
-
-## How to work on
-
-### React Navigation
-// TODO: TBD
-
-### Glamorous Native
-// TODO: TBD
-
-### Formik
-// TODO: TBD
-
-### Multiple environments
-// TODO: TBD
-
-### Crash report
-// TODO: TBD
-
-### Feature flags
 // TODO: TBD
 
 ## Style guide
