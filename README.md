@@ -55,7 +55,6 @@ WRITE SMALL, REUSABLE AND COMPOSABLE FUNCTIONS
 * Organize your files around product features, not roles. Also, place your test files next to their implementation.
 > Why? Instead of a long list of files, you will create small modules that encapsulate one responsibility including its test and so on. It gets much
 easier to navigate through and things can be found at a glance.
-* Put your additional test files to a separate test folder to avoid confusion.
 * A separate directory for each component, module, higher order component,...
 > Why? It's easier to extend and organize files. Make a change on a component won't affect to the structure of its parent directory
 
@@ -111,3 +110,40 @@ should be a verb or a verb phrase, and it needs to communicate its intention.
 * We use Prettier with a pre‑commit hook to format code.
 > Why? While prettier itself can be very powerful, it's not very productive to run it simply as a npm task alone each time to format code. This is
 where lint-staged (and husky) come into play.
+
+### Testing guidelines
+
+* Place your test files next to the tested modules using a naming convention, like `componentName.component.test.tsx`.
+> Why? You don't want to dig through a folder structure to find a unit test.
+
+* Put your additional test files into a separate test folder to avoid confusion.
+> Why? Some test files don't particularly relate to any specific implementation file. You have to put it in a folder that is most likely to be found by
+other developers: `__test__` folder.
+
+* Write testable code, avoid side effects, extract side effects, write pure functions
+> Why? You want to test a business logic as separate units. You have to "minimize the impact of randomness and nondeterministic processes on the
+reliability of your code". A pure function is a function that always returns the same output for the same input. Conversely, an impure function is one that may have side effects or depends on conditions from the outside to produce a value. That makes it less predictable.
+
+* Run tests locally before making any pull requests to develop.
+> Why? You don't want to be the one who caused production‑ready branch build to fail. Run your tests after your rebase and before pushing your
+feature‑branch to a remote repository.
+
+## Contributing guidelines
+If you find any problems, please open an issue or submit a fix as a pull request.
+
+We welcome new features, but for large changes let's discuss first to make sure the changes can be accepted and integrated smoothly.
+
+### Git rules
+
+* Perform work in a feature branch.
+* Branch out from `master`
+* Never push into `master`. Make a Pull Request.
+* Update your local `master` branch and do an interactive rebase before pushing your feature and making a Pull Request.
+* Resolve potential conflicts while rebasing and before making a Pull Request.
+* Delete local and remote feature branches after merging.
+* Before making a Pull Request, make sure your feature branch builds successfully and passes all tests (including code style checks).
+
+### Writing good commit messages
+* Separate the subject from the body with a newline between the two.
+* Use the body to explain what and why as opposed to how.
+* We use [validate‑commit](https://github.com/willsoto/validate-commit/blob/master/conventions/angular.md) (angular preset) to validate commit messages
