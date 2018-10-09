@@ -147,3 +147,98 @@ We welcome new features, but for large changes let's discuss first to make sure 
 * Separate the subject from the body with a newline between the two.
 * Use the body to explain what and why as opposed to how.
 * We use [validate‑commit](https://github.com/willsoto/validate-commit/blob/master/conventions/angular.md) (angular preset) to validate commit messages
+
+## Technical decisions
+
+### Why Expo?
+
+When creating a new React Native app, it’s common to think in terms of two choices. Using Expo. Or not using Expo. Even the official React Native [Getting Started](https://facebook.github.io/react-native/docs/getting-started.html) docs describe it in these terms.
+
+Expo has become incredibly popular for several reasons:
+
+1. You can test on a real device without having an Apple Developer Account ($99/year). This is accomplished via their free Expo app in the Google Play
+and App Store. Inside the Expo app, you can run your own app. It’s not exactly like installing your app on a device since you’re really just in the Expo
+app. But it’s still pretty cool.
+2. Expo handles a bunch of config steps for deploying your app. A lot of people learning React Native are not coming from a mobile development
+background, so doing this configuration themselves seems daunting.
+3. Expo has an SDK to handle all kinds of things like using the camera, accelerometer, maps, location tracking, analytics, etc. Granted, most of these
+features can be implemented using open source packages, but it is nice that Expo provides so many of these in one place.
+
+#### Expo’s Shortcomings
+
+When you create your app via Expo, it creates a file structure for you that does not include the iOS and Android project files. Some features require you to tweak these files though. One example is adding a third‑party push notification library. To do this, you must do the following in that project file:
+
+* Turn on the push notifications capability.
+* Link the push notification library to your app’s bundle (something that react-native link would likely do for you, depending on the push library
+you’re implementing).
+
+With Expo, you can’t do those steps because there is no project file to do them in. So here is where the road leads to “detaching” from Expo. Detaching will produce these project files so you can configure them.
+
+There are two options when detaching from Expo.
+
+1. Completely remove Expo. This gives you a project similar to what you’d get with `react-native init`.
+2. Partially remove Expo (often referred to as ExpoKit). This allows you to still use the Expo SDK. Your Javascript continues to be hosted remotely and
+updated via `exp publish`.
+
+Both options give you the iOS and Android project files so you can configure them yourself.
+
+### Why Feature-Oriented Architecture?
+
+### Why TypeScript?
+
+[TypeScript](http://www.typescriptlang.org/) is a superset of JavaScript which primarily provides optional static typing, classes, and interfaces. One of the big benefits is to enable IDEs to provide a richer environment for spotting common errors as you type the code.
+
+For a large JavaScript project, adopting TypeScript might result in more robust software, while still being deployable where a regular JavaScript application would run.
+
+### Why Functional Javascript?
+
+### Why Ramda over lodash, or underscore?
+
+### Why Recompose, Higher Order Component, and prefer stateless functional component over stateful component?
+
+### Why prefer formik over redux-form?
+
+## Recipes
+
+### Render multiple snapshots on a React component
+
+```js
+import { testSnapshots } from '../../../../utils/test.util'
+
+import TextInput from './TextInput.component'
+
+const props = {}
+
+describe('Form Inputs - TextInput', () => {
+  testSnapshots(TextInput, [
+    {
+      props,
+      description: 'basic render'
+    },
+    {
+      props: {
+        ...props,
+        fieldProps: {
+          ...props.fieldProps,
+          values: { title: '' },
+          touched: { title: true },
+          errors: { title: 'Title is required' }
+        }
+      },
+      description: 'should render an error'
+    }
+  ])
+})
+```
+
+### Render a single snapshot on a React element
+
+```js
+import { singleSnapTest } from '../../../../utils/test.util'
+
+describe('sub render', () => {
+  const List = wrapper.find('FlatList')
+  const Item = List.props().renderItem({ item })
+  singleSnapTest(Item, 'render goal item correctly')
+})
+```
