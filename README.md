@@ -1,5 +1,7 @@
 # React Native Architecture
+
 Core principles, patterns and best practices for building a react native application
+
 
 Table of Contents
 =================
@@ -12,6 +14,16 @@ Table of Contents
    * [Core ideology](#core-ideology)
    * [Code structure](#code-structure)
    * [Code convention](#code-convention)
+   * [Naming convention](#naming-convention)
+      * [Components](#components)
+      * [HOC](#hoc)
+      * [Utility functions](#utility-functions)
+      * [Constants](#constants)
+      * [Configs](#configs)
+      * [Module](#module)
+      * [GraphQL queries](#graphql-queries)
+      * [GraphQL mutations](#graphql-mutations)
+   * [Usage](#usage)
    * [Testing guidelines](#testing-guidelines)
 * [Contributing guidelines](#contributing-guidelines)
    * [Git rules](#git-rules)
@@ -23,7 +35,7 @@ Table of Contents
    * [Why TypeScript?](#why-typescript)
    * [Why Functional Javascript?](#why-functional-javascript)
    * [Why Ramda over lodash, or underscore?](#why-ramda-over-lodash-or-underscore)
-   * [Why Recompose, Higher Order Component, and prefer stateless functional component over stateful component?](#why-recompose-higher-order-component-and-prefer-stateless-functional-component-over-stateful-component)
+   * [Why prefer Stateless Functional Component over Stateful Component, Higher Order Component and Recompose ?](#why-prefer-stateless-functional-component-over-stateful-component-higher-order-component-and-recompose-)
    * [Why prefer formik over redux-form?](#why-prefer-formik-over-redux-form)
 * [Recipes](#recipes)
    * [Render multiple snapshots on a React component](#render-multiple-snapshots-on-a-react-component)
