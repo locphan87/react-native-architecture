@@ -1,6 +1,34 @@
 # React Native Architecture
 Core principles, patterns and best practices for building a react native application
 
+Table of Contents
+=================
+
+* [Tech Stack](#tech-stack)
+   * [Application Blueprint](#application-blueprint)
+   * [Testing Setup](#testing-setup)
+   * [Dev tools](#dev-tools)
+* [Style guide](#style-guide)
+   * [Core ideology](#core-ideology)
+   * [Code structure](#code-structure)
+   * [Code convention](#code-convention)
+   * [Testing guidelines](#testing-guidelines)
+* [Contributing guidelines](#contributing-guidelines)
+   * [Git rules](#git-rules)
+   * [Writing good commit messages](#writing-good-commit-messages)
+* [Technical decisions](#technical-decisions)
+   * [Why Expo?](#why-expo)
+      * [Expo’s Shortcomings](#expos-shortcomings)
+   * [Why Feature-Oriented Architecture?](#why-feature-oriented-architecture)
+   * [Why TypeScript?](#why-typescript)
+   * [Why Functional Javascript?](#why-functional-javascript)
+   * [Why Ramda over lodash, or underscore?](#why-ramda-over-lodash-or-underscore)
+   * [Why Recompose, Higher Order Component, and prefer stateless functional component over stateful component?](#why-recompose-higher-order-component-and-prefer-stateless-functional-component-over-stateful-component)
+   * [Why prefer formik over redux-form?](#why-prefer-formik-over-redux-form)
+* [Recipes](#recipes)
+   * [Render multiple snapshots on a React component](#render-multiple-snapshots-on-a-react-component)
+   * [Render a single snapshot on a React element](#render-a-single-snapshot-on-a-react-element)
+
 ## Tech Stack
 
 ### Application Blueprint
