@@ -427,27 +427,13 @@ For a large JavaScript project, adopting TypeScript might result in more robust 
 
 ### Why Functional Javascript?
 
+![Function composition](https://cdn-images-1.medium.com/max/2000/1*yGnDGRW4pTgmcDUi4oC8Uw.png)
+
 As a multi‑paradigm programming language, JavaScript can be written in many styles.
 
-Functional programming is a [style of programming](https://wiki.haskell.org/Functional_programming) which models computations as the evaluation of expressions. Contrast this with imperative programming where programs are composed of statements which change global state when executed. Functional programming typically avoids using mutable state and favors side‑effect free functions and immutable data instead. This encourages writing composable and declarative programs that are easy to reason about.
+Functional programming is a [style of programming](https://wiki.haskell.org/Functional_programming) which models computations as the evaluation of expressions. Contrast this with imperative programming where programs are composed of statements which change global state when executed.
 
-There are many different ways to divide up the programming language/style landscape. There’s static typing vs dynamic typing, interpreted languages vs
-compiled languages, low‑level vs high‑level, etc.
-
-Another such division is imperative programming vs declarative programming.
-
-Imperative programming is a style of programming where the programmers tell the computer what to do by telling it how to do it. Imperative programming
-gives rise to a lot of the constructs we use every day: control flow (if‑then‑else statements and loops), arithmetic operators (`+`, `-`, `*`, `/`), comparison operators (`===`, `>`, `<`, etc.), and logical operators (`&&`, `||`, `!`).
-
-Declarative programming is a style of programming where the programmers tell the computer what to do by telling it what they want. The computer then
-has to figure out how to produce the result.
-
-One of the classic declarative languages is Prolog. In Prolog, a program consists of a set of facts and a set of inference rules. You kick off the program by asking a question, and Prolog’s inference engine uses the facts and rules to answer your question.
-
-Functional programming is considered a subset of declarative programming. In a functional program, we define functions and then tell the computer what
-to do by combining these functions.
-Even in declarative programs, it is necessary to do similar tasks to those we do in imperative programs. Control flow, arithmetic, comparison, and logic are
-still the basic building blocks we have to work with. But we need to find a way to express these constructs in a declarative way.
+Functional programming typically avoids using mutable state and favors side‑effect free functions and immutable data instead. This encourages writing composable and declarative programs that are easy to reason about.
 
 ### Why Ramda over lodash, or underscore?
 
