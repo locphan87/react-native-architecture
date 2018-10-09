@@ -419,6 +419,8 @@ conflicts!
 
 ### Why TypeScript?
 
+![Why use types?](https://cdn-images-1.medium.com/max/1600/1*ulwmJZfctsdMiwO8HRFDKQ.png)
+
 [TypeScript](http://www.typescriptlang.org/) is a superset of JavaScript which primarily provides optional static typing, classes, and interfaces. One of the big benefits is to enable IDEs to provide a richer environment for spotting common errors as you type the code.
 
 For a large JavaScript project, adopting TypeScript might result in more robust software, while still being deployable where a regular JavaScript application would run.
