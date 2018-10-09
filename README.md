@@ -2,7 +2,6 @@
 
 Core principles, patterns and best practices for building a react native application
 
-
 Table of Contents
 =================
 
@@ -10,6 +9,14 @@ Table of Contents
    * [Application Blueprint](#application-blueprint)
    * [Testing Setup](#testing-setup)
    * [Dev tools](#dev-tools)
+* [Technical design](#technical-design)
+* [How to work on](#how-to-work-on)
+   * [React Navigation](#react-navigation)
+   * [Glamorous Native](#glamorous-native)
+   * [Formik](#formik)
+   * [Multiple environments](#multiple-environments)
+   * [Crash report](#crash-report)
+   * [Feature flags](#feature-flags)
 * [Style guide](#style-guide)
    * [Core ideology](#core-ideology)
    * [Code structure](#code-structure)
@@ -23,11 +30,7 @@ Table of Contents
       * [Module](#module)
       * [GraphQL queries](#graphql-queries)
       * [GraphQL mutations](#graphql-mutations)
-   * [Usage](#usage)
    * [Testing guidelines](#testing-guidelines)
-* [Contributing guidelines](#contributing-guidelines)
-   * [Git rules](#git-rules)
-   * [Writing good commit messages](#writing-good-commit-messages)
 * [Technical decisions](#technical-decisions)
    * [Why Expo?](#why-expo)
       * [Expo’s Shortcomings](#expos-shortcomings)
@@ -40,6 +43,9 @@ Table of Contents
 * [Recipes](#recipes)
    * [Render multiple snapshots on a React component](#render-multiple-snapshots-on-a-react-component)
    * [Render a single snapshot on a React element](#render-a-single-snapshot-on-a-react-element)
+   * [Pattern matching on values](#pattern-matching-on-values)
+   * [Pattern matching on functions](#pattern-matching-on-functions)
+   * [Pattern matching on components](#pattern-matching-on-components)
 
 ## Tech Stack
 
@@ -314,7 +320,8 @@ const params = {
 export default { mutation, params }
 ```
 
-### Usage
+**Usage**
+
 ```js
 import updateUserStatus from '../<ModuleName>/Mutation/updateUserStatus.query'
 ...
