@@ -72,6 +72,29 @@ Table of Contents
 * [lint-staged](https://github.com/okonet/lint-staged) Run linters on git staged files
 * [insomnia](https://insomnia.rest/) Powerful HTTP and GraphQL tool belt
 
+## Technical design
+// TODO: TBD
+
+## How to work on
+
+### React Navigation
+// TODO: TBD
+
+### Glamorous Native
+// TODO: TBD
+
+### Formik
+// TODO: TBD
+
+### Multiple environments
+// TODO: TBD
+
+### Crash report
+// TODO: TBD
+
+### Feature flags
+// TODO: TBD
+
 ## Style guide
 
 ### Core ideology
@@ -126,6 +149,17 @@ export default myModule
 ### Code convention
 
 * Use TSLint to enforce code style.
+
+* Early exit instead of a long `if` block. [Details](https://github.com/ajafff/tslint-consistent-codestyle/blob/master/docs/early-exit.md)
+
+* Only arrow functions. [Details](https://palantir.github.io/tslint/rules/only-arrow-functions/)
+> Why? Traditional functions don’t bind lexical scope, which can lead to unexpected behavior when accessing 'this'.
+
+* Prefer `const`. Requires that variable declarations use `const` instead of `let` and `var` if possible. [Details](https://palantir.github.io/tslint/rules/prefer-const/)
+> Why? Avoid unexpected variable mutations (side effects)
+
+* Prefer conditional expressions. Recommends to use a conditional expression instead of assigning to the same thing in each branch of an `if` statement. [Details](https://palantir.github.io/tslint/rules/prefer-conditional-expression/)
+> Why? Reduce duplication and can eliminate an unnecessary variable declaration.
 
 * Depending on the size of the task use //TODO: comments or open a ticket.
 > Why? So then you can remind yourself and others about a small task (like refactoring a function or updating a comment). For larger tasks use
@@ -306,31 +340,17 @@ reliability of your code". A pure function is a function that always returns the
 > Why? You don't want to be the one who caused production‑ready branch build to fail. Run your tests after your rebase and before pushing your
 feature‑branch to a remote repository.
 
-## Contributing guidelines
-If you find any problems, please open an issue or submit a fix as a pull request.
-
-We welcome new features, but for large changes let's discuss first to make sure the changes can be accepted and integrated smoothly.
-
-### Git rules
-
-* Perform work in a feature branch.
-* Branch out from `master`
-* Never push into `master`. Make a Pull Request.
-* Update your local `master` branch and do an interactive rebase before pushing your feature and making a Pull Request.
-* Resolve potential conflicts while rebasing and before making a Pull Request.
-* Delete local and remote feature branches after merging.
-* Before making a Pull Request, make sure your feature branch builds successfully and passes all tests (including code style checks).
-
-### Writing good commit messages
-* Separate the subject from the body with a newline between the two.
-* Use the body to explain what and why as opposed to how.
-* We use [validate‑commit](https://github.com/willsoto/validate-commit/blob/master/conventions/angular.md) (angular preset) to validate commit messages
-
 ## Technical decisions
 
 ### Why Expo?
 
 When creating a new React Native app, it’s common to think in terms of two choices. Using Expo. Or not using Expo. Even the official React Native [Getting Started](https://facebook.github.io/react-native/docs/getting-started.html) docs describe it in these terms.
+
+* Serving an Expo project for local development
+![Serving an Expo project for local development](https://docs.expo.io/static/images/generated/v30.0.0/workflow/fetch-app-from-xde.png)
+
+* Opening a deployed Expo app
+![Opening a deployed Expo app](https://docs.expo.io/static/images/generated/v30.0.0/workflow/fetch-app-production.png)
 
 Expo has become incredibly popular for several reasons:
 
@@ -572,4 +592,129 @@ describe('sub render', () => {
   const Item = List.props().renderItem({ item })
   singleSnapTest(Item, 'render goal item correctly')
 })
+```
+
+### Pattern matching on values
+
+```js
+import { match } from '../../utils'
+
+const fontSize = match(fontStyle)({
+  h1: 20,
+  h2: 18,
+  title: 16,
+  description: 14,
+  _: 13 // use _ for the default case
+})
+// fontStyle = 'title' => 16
+// fontStyle = 'unknown' => 13
+```
+
+```js
+import { match } from '../../utils'
+
+// the result of each case could be anything
+// primitive values, objects, functions,...
+
+const handleError = match(error)({
+  NOT_FOUND: () => showErrorMessage('Page not found'),
+  TIMEOUT: () => showErrorMessage('Page has timed out'),
+  _: NOOP
+})
+handleError()
+```
+
+### Pattern matching on functions
+
+```js
+// A classical implementation
+const getIconNameFromIndex = (index, rating) => {
+  if (index <= rating) {
+    return 'ic_rating_full'
+  } else if (index - rating < 1) {
+    return 'ic_rating_half'
+  } else {
+    return 'ic_rating_empty'
+  }
+}
+```
+
+```js
+// USING RAMDA
+// for simple `multiclause` function
+import { cond, compose, lte, always, T, subtract, gt } from 'ramda'
+
+// isHalfRating: (number, number) => bool
+const isHalfRating = compose(gt(1), subtract)
+const getIconNameFromIndex = cond([
+  [lte, always('ic_rating_full')],
+  [isHalfRating, always('ic_rating_half')],
+  [T, always('ic_rating_empty')]
+])
+```
+
+```js
+// USING TAILORED
+// for more advanced patterns
+import tailored from 'tailored'
+
+const { variable, clause, defmatch } = tailored
+const $ = variable()
+// isHalfRating: (number, number) => bool
+const isHalfRating = compose(gt(1), subtract)
+
+const getIconNameFromIndex = defmatch(
+  clause([$, $], always('ic_rating_full'), lte),
+  clause([$, $], always('ic_rating_half'), isHalfRating),
+  clause([$, $], always('ic_rating_empty'))
+)
+```
+
+### Pattern matching on components
+
+```js
+// A classical implementation
+import React from 'react'
+...
+const Component = props => {
+  if (props.loading) {
+    return <Loading />
+  }
+  if (props.errors) {
+    return <Text>Something went wrong</Text>
+  }
+  if (equals(conditionA, true)) {
+    return <ComponentA {...props} />
+  }
+  if (equals(conditionB, true)) {
+    return <ComponentB {...props} />
+  }
+  ...
+
+  return <View><MainComponent /></View>
+}
+```
+
+```js
+import {both, propEq } from 'ramda'
+
+import { renderWhen } from '../../hoc'
+
+const notEnoughtPoint = both(
+  propEq('status', Constant.REWARD_STATUS.OPENING),
+  propEq('canExchange', false)
+)
+const hasExpired = propEq('status', Constant.REWARD_STATUS.EXPIRED)
+const RewardItemAction = renderWhen([
+  {
+    when: notEnoughtPoint,
+    render: NotEnoughPointView
+  },
+  {
+    when: hasExpired,
+    render: ExpiredView
+  }
+])(ExchangeActionView)
+
+export default RewardItemAction
 ```
