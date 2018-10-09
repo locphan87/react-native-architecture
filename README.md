@@ -109,7 +109,7 @@ WRITE SMALL, REUSABLE AND COMPOSABLE FUNCTIONS
 ### Code structure
 
 * No duplicate file name in the whole application. Every file need to have a suffix to explain its type
-> Why? It's easier to search for a file and reduce confusing of same file names
+> Why? It's easier to search for a file and reduce the confusion of same file names
 
 ```bash
 ./src/modules/Login/
@@ -121,11 +121,11 @@ WRITE SMALL, REUSABLE AND COMPOSABLE FUNCTIONS
 ├── Login.view.tsx
 ```
 
-* Organize your files around product features, not roles. Also, place your test files next to their implementation.
-> Why? Instead of a long list of files, you will create small modules that encapsulate one responsibility including its test and so on. It gets much
-easier to navigate through and things can be found at a glance.
+* Organize your files around product features, not roles. Also, place your test files next to their implementation. [Details](#why-feature-oriented-architecture)
+> Why? Instead of a long list of files, you will create small modules that encapsulate one responsibility including its test and so on. It gets much easier to navigate through and things can be found at a glance.
+
 * A separate directory for each component, module, higher order component,...
-> Why? It's easier to extend and organize files. Make a change on a component won't affect to the structure of its parent directory
+> Why? It's easier to extend and organize files. Make a change on a component won't affect the structure of its parent directory
 
 ```bash
 ./src/components/
@@ -135,20 +135,16 @@ easier to navigate through and things can be found at a glance.
 └── UI/
 ```
 
-* Only use index.{js|tsx?} for indexing (logic code is not allowed)
-> Why? Using index files make it more comfortable to import files in a deep structure. However, putting logic code in it could end up being an
-anti‑pattern which contains a hidden logic in an unexpected place.
+* Only use index files (`index.tsx`) for indexing (logic code are not allowed)
+> Why? Using index files eases importing files in a deep structure. However, adding logic code to these files would make it more difficult to reason about the application (hidden logic in unexpected places).
 
-* Every main (under ./src) directory must have a README.md file
-> Why? Have no clue about how a directory is organized? How do things work together? Add a README to explain them
-
-* Put all export at the end
-> Why? Randomly export variables, functions, interfaces,...is hard to keep track of what have been exported, especially in a large file
+* Put all export statements at the end of file
+> Why? Export randomly variables, functions, interfaces,...make it hard to keep track of what have been exported, especially in a large file
 
 ```js
 // thousands of lines of code
 ...
-export { myVar,myFunction, IMyInterface, MyTypeAlias }
+export { myVar, myFunction, IMyInterface, MyTypeAlias }
 export default myModule
 ```
 
@@ -264,7 +260,7 @@ Location: `./src/modules/<ModuleName>`
 * Event handlers for screen component `<ModuleName>.handler.tsx`
 * Lifecycle callbacks for screen component `<ModuleName>.lifecycle.tsx`
 * Module's reducer `<ModuleName>.reducer.tsx`
-* Module's utility functions `<ModuleName>.reducer.tsx`
+* Module's utility functions `<ModuleName>.util.tsx`
 * UI view component `<ModuleName>.view.tsx`
 * Form component `<ModuleName>.form.tsx`
 * Style `<ModuleName>.<UI_TYPE>.style.tsx`
@@ -332,7 +328,7 @@ const enhance = compose(
 
 ### Testing guidelines
 
-* Place your test files next to the tested modules using a naming convention, like `componentName.component.test.tsx`.
+* Place your test files next to the tested modules using a naming convention, like `<ComponentName>.component.test.tsx`.
 > Why? You don't want to dig through a folder structure to find a unit test.
 
 * Put your additional test files into a separate test folder to avoid confusion.
@@ -343,7 +339,7 @@ other developers: `__test__` folder.
 > Why? You want to test a business logic as separate units. You have to "minimize the impact of randomness and nondeterministic processes on the
 reliability of your code". A pure function is a function that always returns the same output for the same input. Conversely, an impure function is one that may have side effects or depends on conditions from the outside to produce a value. That makes it less predictable.
 
-* Run tests locally before making any pull requests to develop.
+* Run tests locally before making any pull requests
 > Why? You don't want to be the one who caused production‑ready branch build to fail. Run your tests after your rebase and before pushing your
 feature‑branch to a remote repository.
 
@@ -389,7 +385,7 @@ Both options give you the iOS and Android project files so you can configure the
 
 ### Why Feature-Oriented Architecture?
 
-Traditionally, developers structured their React applications by type. This means they had folders like actions, components, containers, etc.
+Traditionally, developers structured their React applications by type. This means they had folders like components, containers, reducers, actions, etc and put feature-related files into different places.
 
 While this works fine for examples, once you have hundreds or potentially thousands of components, development becomes very hard. To add a feature,
 you would have to search for the correct file in half a dozen different folders with thousands of files. This would quickly become tedious, and confidence in the code base would wane.
@@ -448,10 +444,9 @@ The main advantages of Ramda:
 
 Links:
 * [RamdaJS](https://ramdajs.com/)
-* [Functional JavaScript: Why I prefer using Ramda over Lodash or Underscore!](https://www.codementor.io/michelre/functional-javascript-why-i-prefer-using-ramda-over-lodash-or-underscore-dzovysq11)
 * [Thinking in Ramda](http://randycoulman.com/blog/categories/thinking-in-ramda/)
 
-### Why prefer Stateless Functional Component over Stateful Component, Higher Order Component and Recompose ?
+### Why prefer Stateless Functional Component over Stateful Component, Higher Order Component and Recompose?
 
 Stateless functional components are more elegant and usually are a good choice for building the presentational components. Because they are just functions, you won't have a hard time writing and understanding them, and moreover, they are dead easy to test.
 
@@ -500,14 +495,7 @@ An Enhancer’s job is to:
 
 **Why not use classes and be done with it?**
 
-We strongly prefer composing the application’s UI from many functional stateless components. However, use ES6 Classes if you want (only using HOCs
-might become an anti‑pattern in some specific cases).
-
-```js
-const HellWorld = ({ message = 'Hello World' }) => {
-  return <h1>{message}</h1>
-}
-```
+We strongly prefer composing the application’s UI from many functional stateless components. However, use ES6 Classes if you need (only using HOCs might become an anti‑pattern in a few cases).
 
 By using Functional components you encourage:
 
@@ -516,10 +504,7 @@ By using Functional components you encourage:
 * Easily Unit Tested — Easily test interface with enzyme/jest
 * Easily Mocked — Easily mock props for different situations
 
-And there we were, digging the pattern, and off to the races. We hit a couple of problems along the way. It became super tedious to constantly write the
-same HOC syntax for simple things, we didn’t have patterns for combining multiple enhancers together, and we couldn’t prevent the development of
-duplicate enhancers. It was getting hard to prove the value of this pattern as people were getting bogged down in the syntax and the ideas of HOCs (much
-like engineers do).
+And there we were, digging the pattern, and off to the races. We hit a couple of problems along the way. It became super tedious to constantly write the same HOC syntax for simple things, we didn’t have patterns for combining multiple enhancers together, and we couldn’t prevent the development of duplicate enhancers. It was getting hard to prove the value of this pattern as people were getting bogged down in the syntax and the ideas of HOCs (much like engineers do).
 
 We needed something that
 
@@ -532,7 +517,7 @@ That’s when we turned to [Recompose](https://github.com/acdlite/recompose)
 
 ### Why prefer formik over redux-form?
 
-Formik helps with the major problems of handling forms in React:
+[Formik](https://github.com/jaredpalmer/formik) helps with the major problems of handling forms in React:
 
 1. Transforming props to form state
 2. Validation and error messages
@@ -541,13 +526,12 @@ Formik helps with the major problems of handling forms in React:
 Why not `redux-form`?
 
 1. According to Dan Abramov, [form state is inherently ephemeral and local, so tracking it in Redux (or any kind of Flux library) is unnecessary](https://github.com/reactjs/redux/issues/1287#issuecomment-175351978)
-2. `redux-form` calls your entire top‑level Redux reducer multiple times ON EVERY SINGLE KEYSTROKE. This is fine for small apps, but as your Redux
-app grows, input latency will continue to increase if you use Redux‑Form.
-3. `redux-form` is 22.5 kB minified gzipped (Formik is 12.7 kB
+2. `redux-form` calls your entire top‑level Redux reducer multiple times ON EVERY SINGLE KEYSTROKE. This is fine for small apps, but as your Redux app grows, input latency will continue to increase if you use `redux-form`
+3. `redux-form` is 22.5 kB minified gzipped (Formik is 12.7 kB)
 
 ## Recipes
 
-### Render multiple snapshots on a React component
+### Render multiple snapshots for a React component
 
 ```js
 import { testSnapshots } from '../../utils/test.util'
@@ -577,7 +561,7 @@ describe('Form Inputs - TextInput', () => {
 })
 ```
 
-### Render a single snapshot on a React element
+### Render a single snapshot for a React element
 
 ```js
 import { singleSnapTest } from '../../utils/test.util'
@@ -671,7 +655,7 @@ const getIconNameFromIndex = defmatch(
 // A classical implementation
 import React from 'react'
 ...
-const Component = props => {
+const MyComponent = props => {
   if (props.loading) {
     return <Loading />
   }
@@ -691,25 +675,31 @@ const Component = props => {
 ```
 
 ```js
-import {both, propEq } from 'ramda'
-
 import { renderWhen } from '../../hoc'
 
-const notEnoughtPoint = both(
-  propEq('status', Constant.REWARD_STATUS.OPENING),
-  propEq('canExchange', false)
-)
-const hasExpired = propEq('status', Constant.REWARD_STATUS.EXPIRED)
-const RewardItemAction = renderWhen([
+const MyComponent = props => <View><MainComponent /></View>
+const isLoading = props => {}
+const hasErrror = props => {}
+const isSomethingA = props => {}
+const isSomethingB = props => {}
+const enhance = renderWhen([
   {
-    when: notEnoughtPoint,
-    render: NotEnoughPointView
+    when: isLoading,
+    render: Loading
   },
   {
-    when: hasExpired,
-    render: ExpiredView
+    when: hasError,
+    render: Error
+  },
+  {
+    when: isSomethingA,
+    render: ComponentA
+  },
+  {
+    when: isSomethingB,
+    render: ComponentB
   }
-])(ExchangeActionView)
+])
 
-export default RewardItemAction
+export default enhance(MyComponent)
 ```
