@@ -33,6 +33,8 @@ Table of Contents
    * [Why Ramda over lodash, or underscore?](#why-ramda-over-lodash-or-underscore)
    * [Why prefer Stateless Functional Component over Stateful Component, Higher Order Component and Recompose?](#why-prefer-stateless-functional-component-over-stateful-component-higher-order-component-and-recompose)
    * [Why prefer formik over redux-form?](#why-prefer-formik-over-redux-form)
+   * [Why Glamorous Native](#why-glamorous-native)
+   * [Why prefer date-fns over moment?](#why-prefer-date-fns-over-moment)
 * [Recipes](#recipes)
    * [Render multiple snapshots for a React component](#render-multiple-snapshots-for-a-react-component)
    * [Render a single snapshot for a React element](#render-a-single-snapshot-for-a-react-element)
@@ -418,6 +420,7 @@ The main advantages of Ramda:
 Links:
 * [RamdaJS](https://ramdajs.com/)
 * [Thinking in Ramda](http://randycoulman.com/blog/categories/thinking-in-ramda/)
+* [Why I prefer using Ramda](https://www.codementor.io/michelre/functional-javascript-why-i-prefer-using-ramda-over-lodash-or-underscore-dzovysq11)
 
 ### Why prefer Stateless Functional Component over Stateful Component, Higher Order Component and Recompose?
 
@@ -501,6 +504,17 @@ Why not `redux-form`?
 1. According to Dan Abramov, [form state is inherently ephemeral and local, so tracking it in Redux (or any kind of Flux library) is unnecessary](https://github.com/reactjs/redux/issues/1287#issuecomment-175351978)
 2. `redux-form` calls your entire top‑level Redux reducer multiple times ON EVERY SINGLE KEYSTROKE. This is fine for small apps, but as your Redux app grows, input latency will continue to increase if you use `redux-form`
 3. `redux-form` is 22.5 kB minified gzipped (Formik is 12.7 kB)
+
+### Why Glamorous Native
+// TODO
+
+### Why prefer date-fns over moment?
+
+* Modular - include only parts you need and stop bloating your project with useless functionality
+* `date-fns` doesn't reinvent the wheel and uses the existing native type. Also, it doesn't extend core objects for safety sake
+* `date-fns` is built using pure functions and always returns a new date instance instead of changing the passed one. It allows to prevent bugs and skip long debugging sessions
+* Supports both Flow and TypeScript
+* The functional programming submodule provides a better alternative to chaining — composition, which makes your code clean, safe and doesn't bloat your build
 
 ## Recipes
 
