@@ -676,7 +676,7 @@ const enhance = renderWhen([
   },
   {
     when: hasError,
-    render: Error
+    render: ErrorComponent
   },
   {
     when: isSomethingA,
