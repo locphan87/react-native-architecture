@@ -56,6 +56,7 @@ Table of Contents
 * [Ramda](https://github.com/ramda/ramda) and [Ramda Adjunct](https://github.com/char0n/ramda-adjunct) for functional Javascript
 * [Recompose](https://github.com/acdlite/recompose) for building higher order components
 * [Glamorous Native](https://github.com/robinpowered/glamorous-native) for creating UI components
+* [i18n-js](https://github.com/fnando/i18n-js#setting-up) for providing i18n translations
 * Feature flags
 * Clean and testable service layer for interacting with GraphQL queries and mutations
 * :star: Multi-environment configuration (dev, staging, production,...) for iOS and Android
@@ -480,7 +481,7 @@ By using Functional components you encourage:
 * Easily Unit Tested — Easily test interface with enzyme/jest
 * Easily Mocked — Easily mock props for different situations
 
-And there we were, digging the pattern, and off to the races. We hit a couple of problems along the way. It became super tedious to constantly write the same HOC syntax for simple things, we didn’t have patterns for combining multiple enhancers together, and we couldn’t prevent the development of duplicate enhancers. It was getting hard to prove the value of this pattern as people were getting bogged down in the syntax and the ideas of HOCs (much like engineers do).
+And there we were, digging the pattern, and off to the races. We hit a couple of problems along the way. It became super tedious to constantly write the same HOC syntax for simple things, we didn't have patterns for combining multiple enhancers together, and we couldn't prevent the development of duplicate enhancers. It was getting hard to prove the value of this pattern as people were getting bogged down in the syntax and the ideas of HOCs (much like engineers do).
 
 We needed something that
 
@@ -563,37 +564,26 @@ describe('sub render', () => {
 ### Pattern matching on values
 
 ```js
-import { match } from '../../utils'
+import match from 'match-values'
 
-const fontSize = match(fontStyle)({
+const pattern = {
   h1: 20,
   h2: 18,
   title: 16,
   description: 14,
   _: 13 // use _ for the default case
-})
+}
+const fontSize = match(fontStyle, pattern)
 // fontStyle = 'title' => 16
 // fontStyle = 'unknown' => 13
 ```
 
-```js
-import { match } from '../../utils'
-
-// the result of each case could be anything
-// primitive values, objects, functions,...
-
-const handleError = match(error)({
-  NOT_FOUND: () => showErrorMessage('Page not found'),
-  TIMEOUT: () => showErrorMessage('Page has timed out'),
-  _: NOOP
-})
-handleError()
-```
+[Details](https://github.com/phanhoangloc/match-values#usage)
 
 ### Pattern matching on functions
 
 ```js
-// A classical implementation
+// A common implementation
 const getIconNameFromIndex = (index, rating) => {
   if (index <= rating) {
     return 'ic_rating_full'
@@ -606,8 +596,7 @@ const getIconNameFromIndex = (index, rating) => {
 ```
 
 ```js
-// USING RAMDA
-// for simple `multiclause` function
+// a simple `multiclause` function
 import { cond, compose, lte, always, T, subtract, gt } from 'ramda'
 
 // isHalfRating: (number, number) => bool
@@ -619,50 +608,10 @@ const getIconNameFromIndex = cond([
 ])
 ```
 
-```js
-// USING TAILORED
-// for more advanced patterns
-import tailored from 'tailored'
-
-const { variable, clause, defmatch } = tailored
-const $ = variable()
-// isHalfRating: (number, number) => bool
-const isHalfRating = compose(gt(1), subtract)
-
-const getIconNameFromIndex = defmatch(
-  clause([$, $], always('ic_rating_full'), lte),
-  clause([$, $], always('ic_rating_half'), isHalfRating),
-  clause([$, $], always('ic_rating_empty'))
-)
-```
-
 ### Pattern matching on components
 
 ```js
-// A classical implementation
-import React from 'react'
-...
-const MyComponent = props => {
-  if (props.loading) {
-    return <Loading />
-  }
-  if (props.errors) {
-    return <Text>Something went wrong</Text>
-  }
-  if (equals(conditionA, true)) {
-    return <ComponentA {...props} />
-  }
-  if (equals(conditionB, true)) {
-    return <ComponentB {...props} />
-  }
-  ...
-
-  return <View><MainComponent /></View>
-}
-```
-
-```js
-import { renderWhen } from '../../hoc'
+import { renderWhen } from 'react-native-hocs'
 
 const MyComponent = props => <View><MainComponent /></View>
 const isLoading = props => {}
@@ -676,7 +625,7 @@ const enhance = renderWhen([
   },
   {
     when: hasError,
-    render: Error
+    render: ErrorComponent
   },
   {
     when: isSomethingA,
@@ -690,3 +639,5 @@ const enhance = renderWhen([
 
 export default enhance(MyComponent)
 ```
+
+[Details](https://github.com/phanhoangloc/react-native-hocs#renderwhen)
